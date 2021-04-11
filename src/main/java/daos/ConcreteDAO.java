@@ -33,7 +33,7 @@ public class ConcreteDAO implements DAO {
             ResultSet rs = pstmt.executeQuery();
 
             if(rs.next()){
-                extractCarFromResultSet(rs);
+                return extractCarFromResultSet(rs);
             }
         }
         catch (SQLException e){
@@ -44,10 +44,42 @@ public class ConcreteDAO implements DAO {
     }
 
     public List findAll() {
-        return null;
+        List<Car> carList = new ArrayList<Car>();
+
+        try{
+            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM car ORDER BY id");
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next()){
+                Car car = extractCarFromResultSet(rs);
+                carList.add(car);
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return carList;
     }
 
-    public Car update(Car dto) {
+    public Car update(Car car) {
+        try {
+            String id = "";
+            id += car.getId();
+
+            PreparedStatement pstmt = connection.prepareStatement("UPDATE car SET id = ?,make = ?, model = ?, year = ?, color = ?, vin = ? WHERE id = "+id);
+            pstmt.setInt(1,car.getId());
+            pstmt.setString(2,car.getMake());
+            pstmt.setString(3,car.getModel());
+            pstmt.setInt(4,car.getYear());
+            pstmt.setString(5,"Yellow");
+            pstmt.setString(6,car.getVin());
+            pstmt.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -60,11 +92,7 @@ public class ConcreteDAO implements DAO {
             pstmt.setInt(4,car.getYear());
             pstmt.setString(5,car.getColor());
             pstmt.setString(6,car.getVin());
-            ResultSet rs = pstmt.executeQuery();
-
-            if(rs.next()){
-                extractCarFromResultSet(rs);
-            }
+            pstmt.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -78,7 +106,7 @@ public class ConcreteDAO implements DAO {
         try {
             PreparedStatement pstmt = connection.prepareStatement("DELETE FROM car WHERE id = ?");
             pstmt.setInt(1,id);
-            ResultSet rs = pstmt.executeQuery();
+            pstmt.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();
