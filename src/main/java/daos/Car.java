@@ -1,6 +1,6 @@
 package daos;
 
-public class ConcreteDTO implements DTO{
+public class Car implements DTO{
 
     private int id;
     private String make;
@@ -9,8 +9,11 @@ public class ConcreteDTO implements DTO{
     private String color;
     private String vin;
 
+    Car(){
 
-    ConcreteDTO(int id,String make,String model,int year,String color,String vin){
+    }
+
+    Car(int id,String make,String model,int year,String color,String vin){
         this.id = id;
         this.make = make;
         this.model = model;
@@ -29,7 +32,7 @@ public class ConcreteDTO implements DTO{
     public String getMake() {
         return make;
     }
-    public void setId(String make) {
+    public void setMake(String make) {
         this.make = make;
     }
 
