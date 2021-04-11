@@ -1,6 +1,7 @@
 package daos;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConcreteDAO<T> implements DAO<T>{
@@ -18,16 +19,14 @@ public class ConcreteDAO<T> implements DAO<T>{
     public T findById(int id) {
 
         try{
-            connection = DriverManager.getConnection(dbUrl, username, password);
             PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM car WHERE id = ?");
             pstmt.setInt(1,id);
             ResultSet rs = pstmt.executeQuery();
-            return (T) rs; //NO IDEA IF THIS IS CORRECT LOL
+            return (T) rs;
         }
         catch (SQLException e){
             e.printStackTrace();
         }
-
         return null;
     }
 
